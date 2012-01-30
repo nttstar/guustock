@@ -1,4 +1,10 @@
 Guustock::Application.routes.draw do
+  get "charts/show"
+
+  get "show/index"
+
+  match "charts_show" => "charts#show"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
