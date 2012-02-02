@@ -1,13 +1,12 @@
-require_relative 'macd_indicator'
+require_relative 'indicator'
 
 module Guustock
-  class CzscIndicator < Indicator
+  class FenxingIndicator < Indicator
     def initialize()
-      @macd = MacdIndicator.new
     end
 
     def name()
-      "czsc"
+      "fenxing"
     end
 
     def lookback()
