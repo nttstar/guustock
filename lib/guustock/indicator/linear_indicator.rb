@@ -15,9 +15,9 @@ module Guustock
       @coef.size()-1
     end
 
-    def calculate(forward_bar_list, start = 0)
+    def calculate(forward_bar_list)
       #puts "calculate size : #{forward_bar_list.size()}"
-      range = valid_range(forward_bar_list, start)
+      range = valid_range(forward_bar_list, forward_bar_list.isize[name()])
       return if range.nil?
       #puts "range : #{range}"
       range.each do |i|

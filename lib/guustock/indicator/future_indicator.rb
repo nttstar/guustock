@@ -17,11 +17,8 @@ module Guustock
       0
     end
 
-    def valid_range(forward_bar_list, start = 0)
-      if start<0
-        start = forward_bar_list.size()+start
-      end
-      return nil if start<0
+    def valid_range(forward_bar_list)
+      start = forward_bar_list.isize[name()]
       vstart = [lookback(), start].max
       vend = forward_bar_list.size() - lookforward()
       return nil if vstart>=vend
@@ -29,7 +26,7 @@ module Guustock
     end
 
 
-    def calculate(forward_bar_list, start = 0)
+    def calculate(forward_bar_list)
     end
 
   end

@@ -1,4 +1,5 @@
 require_relative '../db/bar_db_reader.rb'
+require_relative '../common/bar_array.rb'
 
 module Guustock
   class IndicatorRunner
@@ -20,7 +21,7 @@ module Guustock
       else
         key = [bar.id, bar.period]
       end
-      forward_bar = []
+      forward_bar = BarArray.new
       if !@forward_bars.has_key?(key)
         @forward_bars[key] = forward_bar 
       else
@@ -28,12 +29,23 @@ module Guustock
       end
       #puts "forward size : #{forward_bar.size()}"
       forward_bar << bar
-      @indicator.calculate(forward_bar, -1)
-      if forward_bar.size == @max_in_buffer
-        forward_bar = forward_bar.last(@lookback)
-        @forward_bars[key] = forward_bar
-      end
+      @indicator.calculate(forward_bar)
+      #if forward_bar.size == @max_in_buffer
+        #forward_bar = forward_bar.last(@lookback)
+        #@forward_bars[key] = forward_bar
+      #end
     end
+
+    def get_bar_array(id, period)
+      if @single_id
+        key = period
+      else
+        key = [id, period]
+      end
+      
+      @forward_bars[key]
+    end
+
   end
 end
 
