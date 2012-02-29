@@ -1,4 +1,4 @@
-
+require 'date'
 module Guustock
 
   class Bar

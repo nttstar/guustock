@@ -1,18 +1,18 @@
 require_relative '../db/bar_db_reader.rb'
 require_relative '../common/bar_array.rb'
+require_relative 'indicator_calculator.rb'
 
 module Guustock
   class IndicatorRunner
 
-    def initialize(indicator, single_id = false)
-      @indicator = indicator
+    def initialize(indicator_name, single_id = false)
+      @indicator_name = indicator_name
       @single_id = single_id
-      @indicator_name = indicator.name()
-      @lookback = @indicator.lookback()
       @db_reader = BarDbReader.instance
       @forward_bars = {} 
       @compact_ratio = 5
-      @max_in_buffer = @lookback*@compact_ratio
+      #@lookback = @indicator.lookback()
+      #@max_in_buffer = @lookback*@compact_ratio
     end
 
     def add(bar)
@@ -29,7 +29,7 @@ module Guustock
       end
       #puts "forward size : #{forward_bar.size()}"
       forward_bar << bar
-      @indicator.calculate(forward_bar)
+      IndicatorCalculator.calculate(@indicator_name, forward_bar)
       #if forward_bar.size == @max_in_buffer
         #forward_bar = forward_bar.last(@lookback)
         #@forward_bars[key] = forward_bar

@@ -2,25 +2,21 @@ require_relative 'indicator'
 require_relative 'czsc_helper'
 
 module Guustock
-  class FenxingIndicator < Indicator
+  class FenxingkIndicator < Indicator
     def initialize()
-      depend_on("macd")
-      depend_on("fenxingk")
     end
 
     def name()
-      "fenxing"
-    end
-
-    def standard_name()
-      "_fenxing_standardbar"
+      "fenxingk"
     end
 
     def lookback()
-      120
+      1
     end
 
-    def calculate(forward_bar_list)
+    def calculate(bar_array)
+      range = valid_range(bar_array)
+      range.each do |i|
       size = forward_bar_list.size()
       #puts "calculate size : #{forward_bar_list.size()}"
       @macd.calculate(forward_bar_list)

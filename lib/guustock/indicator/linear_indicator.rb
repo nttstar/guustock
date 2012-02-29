@@ -15,19 +15,18 @@ module Guustock
       @coef.size()-1
     end
 
-    def calculate(forward_bar_list)
+    def calculate(bar_array)
       #puts "calculate size : #{forward_bar_list.size()}"
-      range = valid_range(forward_bar_list, forward_bar_list.isize[name()])
-      return if range.nil?
+      range = valid_range(bar_array)
       #puts "range : #{range}"
       range.each do |i|
-        bar = forward_bar_list[i]
+        bar = bar_array[i]
         next if !bar.indicator[name()].nil?
         pos = i-lookback()
         result = 0.0
         (0...@coef.size()).each do |ic|
           #puts "status #{pos} - #{ic} - #{i}"
-          result += forward_bar_list[pos].price() * @coef[ic]
+          result += bar_array[pos].price() * @coef[ic]
           pos += 1
         end
         bar.indicator[name()] = result

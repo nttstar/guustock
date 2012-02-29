@@ -1,7 +1,21 @@
 
 module Guustock
   class Indicator
+
+    #attr_reader :dependencies
+
     def initialize
+      #@dependencies = []
+    end
+
+    def dependencies
+      @dependencies ||= Array.new
+
+      @dependencies
+    end
+
+    def depend_on(name)
+      dependencies << name
     end
 
     def name()
@@ -12,16 +26,22 @@ module Guustock
       0
     end
 
-    def valid_range(forward_bar_list, start)
-      #start = forward_bar_list.isize[name()]
+    def barback()
+      
+      lookback()
+    end
+
+    def valid_range(bar_array)
+      start = bar_array.isize[name()]
       vstart = [lookback(), start].max
-      vend = forward_bar_list.size()
-      return nil if vstart>=vend
+      vend = bar_array.size()
+      return Range.new(0,0,true) if vstart>=vend
+
       vstart...vend
     end
 
 
-    def calculate(forward_bar_list)
+    def calculate(bar_array)
     end
 
   end
