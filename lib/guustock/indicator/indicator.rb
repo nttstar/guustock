@@ -2,10 +2,8 @@
 module Guustock
   class Indicator
 
-    #attr_reader :dependencies
 
     def initialize
-      #@dependencies = []
     end
 
     def dependencies
@@ -22,20 +20,32 @@ module Guustock
       "indicator"
     end
 
+    #not be used, just for defining min_lookback and max_lookback
     def lookback()
       0
     end
 
-    def barback()
-      
+    def min_lookback()
+
       lookback()
+    end
+
+    def max_lookback()
+
+      min_lookback()
+    end
+
+    def lookforward()
+
+      0
     end
 
     def valid_range(bar_array)
       start = bar_array.isize[name()]
-      vstart = [lookback(), start].max
+      vstart = [min_lookback(), start].max
       vend = bar_array.size()
-      return Range.new(0,0,true) if vstart>=vend
+      #return Range.new(0,0,true) if vstart>=vend
+      return nil if vstart>=vend
 
       vstart...vend
     end

@@ -18,6 +18,7 @@ module Guustock
     def calculate(bar_array)
       #puts "calculate size : #{forward_bar_list.size()}"
       range = valid_range(bar_array)
+      return if range.nil?
       #puts "range : #{range}"
       range.each do |i|
         bar = bar_array[i]

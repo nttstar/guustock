@@ -1,10 +1,10 @@
 require_relative 'indicator'
 require_relative 'czsc_helper'
+require_relative 'czsc_indicator_base'
 
 module Guustock
-  class FenxingIndicator < Indicator
+  class FenxingIndicator < CzscIndicatorBase
     def initialize()
-      depend_on("macd")
       depend_on("fenxingk")
     end
 
@@ -12,92 +12,56 @@ module Guustock
       "fenxing"
     end
 
-    def standard_name()
-      "_fenxing_standardbar"
+    def min_lookback()
+      1
     end
 
-    def lookback()
-      120
-    end
+    ValueType = Struct.new(:cbar, :index)
 
-    def calculate(forward_bar_list)
-      size = forward_bar_list.size()
-      #puts "calculate size : #{forward_bar_list.size()}"
-      @macd.calculate(forward_bar_list)
-      #generate standard bar first
-      isize = forward_bar_list.isize[standard_name()]
-      #previous_bar = []
-      #previous_bar << forward_bar_list[isize-1] if isize>0
-      last_cbar = nil
-      last_cbar = CzscBarValue.new(forward_bar_list[isize-1]) if isize>0
-      start = isize
-      move = NO_MOVE
-      start.upto(size-1) do |i|
-        bar = forward_bar_list[i]
-        #if previous_bar.empty?
-          #previous_bar << bar
-          #next
-        #end
-        if last_cbar.nil?
-          last_cbar = CzscBarValue.new(bar)
-          next
-        end
-        relation = CzscHelper.relation(last_cbar, bar)
-        if relation == BAR_HIGHER
-          move = MOVE_UP
-        elsif relation == BAR_LOWER
-          move = MOVE_DOWN
-        else
-          #raise "#{forward_bar_list}"
-          #keep move not change
-        end
-        if CzscHelper.try_merge(last_cbar, bar, move)
-          #do sth?
-        else
-          isize = i
-          if move!=NO_MOVE
-            forward_bar_list[i-1].indicator[standard_name()] = last_cbar
-          end
-          last_cbar = CzscBarValue.new(bar)
+    def calculate(bar_array)
+      range = valid_range(bar_array)
+      return if range.nil?
+
+      cname = "fenxingk"
+      value_array = []
+      size = bar_array.size()
+      isize = bar_array.isize[name()]
+      (range.begin-1).downto(0) do |i|
+        cbar = bar_array[i].indicator[cname]
+        unless cbar.nil?
+          value_array << ValueType.new(cbar, i)
+          break
         end
       end
-      forward_bar_list.isize[standard_name()] = isize
 
-
-      isize = forward_bar_list.isize[name()]
-      s_isize = forward_bar_list.isize[standard_name()]
-      start = isize
-      cbar_array = []
-      index_array = []
-      start.upto(size-2) do |i|
-        cbar = forward_bar_list[i].indicator[standard_name()]
+      cisize = bar_array.isize[cname]
+      range.each do |i|
+        cbar = bar_array[i].indicator[cname]
         unless cbar.nil?
-          cbar_array << cbar
-          index_array << i
+          value_array << ValueType.new(cbar, i)
         end
-        next if char_array.size<3
-        if CzscHelper.relation(cbar_array[0], cbar_array[1])==BAR_HIGHER and CzscHelper.relation(cbar_array[1], cbar_array[2])==BAR_LOWER
-          forward_bar_list[index_array[0]].indicator[name()] = FX_DI_LEFT
-          forward_bar_list[index_array[1]].indicator[name()] = FX_DI
-          forward_bar_list[index_array[2]].indicator[name()] = FX_DI_RIGHT
-          cbar_array.clear
-          index_array.clear
+        next if value_array.size<3
+        relation01 = CzscHelper.relation(value_array[0].cbar, value_array[1].cbar) 
+        relation12 = CzscHelper.relation(value_array[1].cbar, value_array[2].cbar) 
+        if relation01==BAR_HIGHER and relation12==BAR_LOWER
+          bar_array[value_array[0].index].indicator[name()] = FX_DI_LEFT
+          bar_array[value_array[1].index].indicator[name()] = FX_DI
+          bar_array[value_array[2].index].indicator[name()] = FX_DI_RIGHT
+          value_array.clear
           isize = i+1
-        elsif CzscHelper.relation(cbar_array[0], cbar_array[1])==BAR_LOWER and CzscHelper.relation(cbar_array[1], cbar_array[2])==BAR_HIGHER
-          forward_bar_list[index_array[0]].indicator[name()] = FX_DING_LEFT
-          forward_bar_list[index_array[1]].indicator[name()] = FX_DING
-          forward_bar_list[index_array[2]].indicator[name()] = FX_DING_RIGHT
-          cbar_array.clear
-          index_array.clear
+        elsif relation01==BAR_LOWER and relation12==BAR_HIGHER
+          bar_array[value_array[0].index].indicator[name()] = FX_DING_LEFT
+          bar_array[value_array[1].index].indicator[name()] = FX_DING
+          bar_array[value_array[2].index].indicator[name()] = FX_DING_RIGHT
+          value_array.clear
           isize = i+1
         else
-          forward_bar_list[index_array[0]].indicator[name()] = FX_OTHER
-          cbar_array.delete_at(0)
-          index_array.delete_at(0)
+          bar_array[value_array[0].index].indicator[name()] = FX_OTHER
+          value_array.delete_at(0)
           isize = i-1
         end
       end
-      forward_bar_list.isize[name()] = isize
+      bar_array.isize[name()] = isize
     end
 
   end

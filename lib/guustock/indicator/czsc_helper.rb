@@ -2,23 +2,45 @@ require_relative '../common/bar.rb'
 
 module Guustock
 
-  BAR_CONTAINS = 1
-  BAR_BE_CONTAINED = 2
-  BAR_HIGHER = 3
-  BAR_LOWER = 4
-  BAR_EQUAL = 5
+  BAR_CONTAINS = "CONTAINS"
+  BAR_BE_CONTAINED = "BE_CONTAINED"
+  BAR_HIGHER = "HIGHER"
+  BAR_LOWER = "LOWER"
+  BAR_EQUAL = "EQUAL"
 
-  MOVE_UP = 1
-  MOVE_DOWN = 2
-  NO_MOVE = 3
+  #MOVE_UP = 1
+  #MOVE_DOWN = 2
+  #NO_MOVE = 3
 
-  FX_DI = 1
-  FX_DI_LEFT = 2
-  FX_DI_RIGHT = 3
-  FX_DING = 4
-  FX_DING_LEFT = 5
-  FX_DING_RIGHT = 6
-  FX_OTHER = 7
+  DIRECTION_NO = "NO"
+  DIRECTION_UP = "UP"
+  DIRECTION_DOWN = "DOWN"
+
+  FX_DI = "DI"
+  FX_DI_LEFT = "DI_LEFT"
+  FX_DI_RIGHT = "DI_RIGHT"
+  FX_DING = "DING"
+  FX_DING_LEFT = "DING_LEFT"
+  FX_DING_RIGHT = "DING_RIGHT"
+  FX_OTHER = "OTHER"
+
+  CZSC_LOOKBACK = 50
+
+  class CzscBarValue
+
+    attr_accessor :high, :low, :direction
+    def initialize(bar, direction = DIRECTION_NO)
+      @high = bar.high
+      @low = bar.low
+      @direction = direction
+    end
+
+    def to_s
+
+      "high:#{@high},low:#{@low},direction:#{@direction}"
+    end
+
+  end
 
   class CzscHelper
     def self.relation(from, to)
@@ -45,20 +67,20 @@ module Guustock
       end
     end
 
-    def self.try_merge(bar, param, move)
-      if move==NO_MOVE
+    def self.try_merge(cbar, bar)
+      if cbar.direction==DIRECTION_NO
         return false
       else
-        relat = relation(bar, param)
+        relat = relation(cbar, bar)
         if relat != BAR_CONTAINS and relat != BAR_BE_CONTAINED
           return false
         end
-        if move==MOVE_UP
-          bar.low = [bar.low, param.low].max
-          bar.high = [bar.high, param.high].max
+        if cbar.direction==DIRECTION_UP
+          cbar.low = [cbar.low, bar.low].max
+          cbar.high = [cbar.high, bar.high].max
         else
-          bar.low = [bar.low, param.low].min
-          bar.high = [bar.high, param.high].min
+          cbar.low = [cbar.low, bar.low].min
+          cbar.high = [cbar.high, bar.high].min
         end
         return true
       end
@@ -66,15 +88,6 @@ module Guustock
     end
   end
 
-  class CzscBarValue
-
-    attr_reader :high, :low
-    def initialize(bar)
-      @high = bar.high
-      @low = bar.low
-    end
-
-  end
 
 end
 
