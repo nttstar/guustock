@@ -1,3 +1,4 @@
+<%= javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' %>
 <%= javascript_include_tag 'highstock.js' %>
 <p><%= "indicator_name=#{@indicator_name}" %></p>
 <p><%= "id=#{@id}" %></p>
@@ -7,3 +8,44 @@
 <p><%= "msg=#{@msg}" %></p>
 <p><%= "chart_url=#{@chart_url}" %></p>
 <p><img src="<%= @chart_url %>"/></p>
+<div id="container" style="width: 800px;"></div>
+<script type="text/javascript">
+$(document).ready(function(){
+chart1 = new Highcharts.StockChart({
+chart: {
+renderTo: 'container'
+},
+rangeSelector: {
+selected: 1
+},
+title: {
+text: 'Test chart'
+},
+//xAxis: {
+//dateTimeLabelFormats:
+//{
+//second: '%Y-%m-%d<br/>%H:%M:%S',
+//minute: '%Y-%m-%d<br/>%H:%M',
+//hour: '%Y-%m-%d<br/>%H:%M',
+//day: '%Y<br/>%m-%d',
+//week: '%Y<br/>%m-%d',
+//month: '%Y-%m',
+//year: '%Y'
+//},
+//},
+
+series: [{
+type: 'candlestick',
+name: 'A',
+data: [
+[1110240000000,41.90,42.16,40.10,40.53],
+[1110326400000,39.44,40.28,38.83,39.35]
+]
+}]
+
+
+});
+
+});
+
+</script>
