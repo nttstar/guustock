@@ -1,6 +1,6 @@
 require_relative "../common/bar.rb"
-require_relative "bar_db"
-require_relative "bar_util"
+require_relative "bar_db.rb"
+require_relative "bar_util.rb"
 
 module Guustock
   

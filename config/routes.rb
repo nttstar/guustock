@@ -1,4 +1,6 @@
 Guustock::Application.routes.draw do
+  get "data_feed/bar"
+
   get "charts/show"
 
   get "show/index"

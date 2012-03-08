@@ -1,6 +1,10 @@
+$:.sort
+$:.each do |p|
+  puts p
+end
+require 'tokyocabinet'
 require_relative "../common/bar.rb"
 require_relative "../common/config.rb"
-require 'tokyocabinet'
 include TokyoCabinet
 
 module Guustock
