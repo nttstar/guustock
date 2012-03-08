@@ -15,7 +15,7 @@ module Guustock
         return @@instance
     end
     
-    def forward_each(id, time, periods = [5,15])
+    def forward_each(id, time, periods = [5,30])
       max_period = periods.max
       raw_period = BarDb.raw_period
       buffer_match_size = periods.collect { |p| p/raw_period }
@@ -33,7 +33,7 @@ module Guustock
           next if !BarUtil::check_time(bar)
           output << bar
         end
-        yield output
+        yield output unless output.empty?
         buffer.clear() if buffer_size==max_buffer_size 
       end
 
