@@ -2,6 +2,7 @@ require 'guustock/view/google_chart_viewer'
 
 
 class ChartsController < ApplicationController
+  #layout "chart"
 
   def initialize
     @chart = Guustock::GoogleChartViewer.new
