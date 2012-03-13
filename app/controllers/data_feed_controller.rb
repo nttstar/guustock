@@ -21,7 +21,8 @@ class DataFeedController < ApplicationController
       bar = bars[0]
       break if bar.time>=end_time
       @bar_array << bar
-      data = [bar.time.to_i*1000, bar.start, bar.high, bar.low, bar.close, bar.vol, bar.period]
+      #data = [bar.time.to_i*1000, bar.start, bar.high, bar.low, bar.close, bar.vol, bar.period]
+      data = [(bar.time.to_i+8*3600)*1000, bar.start, bar.high, bar.low, bar.close]
       @data_array << data
     end
     #render :bar, :layout => false

@@ -2,7 +2,8 @@
 <!--
 <p><%= @bar_array.size %></p>
 <%  @bar_array.each do |bar| %>
-    <%= "#{bar.time.strftime("%Y%m%dT%H%M%S")},#{bar.start},#{bar.high},#{bar.low},#{bar.close},#{bar.vol},#{bar.period}" %>
+    <%= #"#{bar.time.strftime("%Y%m%dT%H%M%S")},#{bar.start},#{bar.high},#{bar.low},#{bar.close},#{bar.vol},#{bar.period}" %>
+    <%= "#{bar.time.to_i*1000},#{bar.start},#{bar.high},#{bar.low},#{bar.close}" %>
 <%  end %>
 
 

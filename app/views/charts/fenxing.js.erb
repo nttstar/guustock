@@ -1,0 +1,63 @@
+//chart1 = new Highcharts.StockChart({
+//chart: {
+//renderTo: 'container'
+//},
+//rangeSelector: {
+//selected: 1
+//},
+//title: {
+//text: 'Test chart'
+//},
+//
+//series: [{
+//type: 'candlestick',
+//name: 'A',
+//data: [
+//[1110240000000,41.90,42.16,40.10,40.53],
+//[1110326400000,39.44,40.28,38.83,39.35]
+//]
+//}]
+//
+//
+//});
+
+$.getJSON(<%= "'#{@bar_data_source}'" -%>, function(jsonData) {
+    
+    chart1 = new Highcharts.StockChart({
+    chart: {
+    renderTo: 'container'
+    },
+    rangeSelector: {
+    buttons: [
+    {type:'day', count: 1, text: '1d'},
+    {type:'month', count: 1, text: '1m'},
+    {type:'month', count: 6, text: '6m'},
+    {type:'year', count: 1, text: '1y'}
+    ],
+    selected: 1
+    },
+    title: {
+    text: 'Chinese Stock Market Bar Chart'
+    },
+    //xAxis: {
+    //dateTimeLabelFormats:
+    //{
+    //second: '%Y-%m-%d<br/>%H:%M:%S',
+    //minute: '%Y-%m-%d<br/>%H:%M',
+    //hour: '%Y-%m-%d<br/>%H:%M',
+    //day: '%Y<br/>%m-%d',
+    //week: '%Y<br/>%m-%d',
+    //month: '%Y-%m',
+    //year: '%Y'
+    //},
+    //},
+
+    series: [{
+    type: 'candlestick',
+    name: 'Bar',
+    data: jsonData
+    }]
+
+    });
+
+});
