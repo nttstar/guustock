@@ -29,8 +29,8 @@ class ChartsController < ApplicationController
       format.js do
         @ohlc_data_source = url_for(:action => "bar", :controller => "data_feed")
         @ohlc_data_source = "#{@ohlc_data_source}?id=#{@id}&year=#{@year}"
+        #puts "url : #{@ohlc_data_source}"
         render :action => "bar"
-        #puts "url : #{@bar_data_source}"
       end
     end
   end
@@ -53,7 +53,6 @@ class ChartsController < ApplicationController
         @ohlc_data_source = url_for(:action => "fenxing", :controller => "data_feed")
         @ohlc_data_source = "#{@ohlc_data_source}?id=#{@id}&year=#{@year}"
         render :action => "fenxing"
-        #puts "url : #{@bar_data_source}"
       end
     end
   end

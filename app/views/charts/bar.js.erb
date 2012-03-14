@@ -21,7 +21,7 @@
 //
 //});
 
-$.getJSON(<%= "'#{@ohlc_data_source}'" -%>, function(jsonData) {
+$.getJSON(<%= raw("'#{@ohlc_data_source}'") -%>, function(jsonData) {
     
     chart1 = new Highcharts.StockChart({
     chart: {
