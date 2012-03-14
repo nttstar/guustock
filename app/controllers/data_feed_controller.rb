@@ -1,4 +1,5 @@
 require 'guustock/db/bar_db_reader'
+require 'guustock/indicator/indicator_viewer'
 
 class DataFeedController < ApplicationController
   respond_to :json
@@ -23,6 +24,38 @@ class DataFeedController < ApplicationController
       @bar_array << bar
       #data = [bar.time.to_i*1000, bar.start, bar.high, bar.low, bar.close, bar.vol, bar.period]
       data = [(bar.time.to_i+8*3600)*1000, bar.start, bar.high, bar.low, bar.close]
+      @data_array << data
+    end
+    #render :bar, :layout => false
+    render :json => @data_array
+  end
+
+  def fenxing
+    @id = params['id']
+    @year = params['year'].to_i
+    @period = params['period']
+    @period = "5" if @period.nil?
+    @period = @period.to_i
+    periods = [@period]
+    db_reader = BarDbReader.instance
+    start_time = Time.mktime(@year)
+    end_time = Time.mktime(@year+1)
+    viewer = IndicatorViewer.new("fenxing")
+    viewer.view(@id, periods, start_time, end_time)
+    @data_array = []
+    viewer.bar_sequence.each do |bars|
+      #puts bars[0]
+      #puts bars.size
+      bar = bars[0]
+      #data = [bar.time.to_i*1000, bar.start, bar.high, bar.low, bar.close, bar.vol, bar.period]
+      fenxingk = bar.indicator['fenxingk']
+      fenxing = bar.indicator['fenxing']
+      if fenxingk.nil?
+        fenxingk = CzscBarValue.new
+        next
+      end
+      data = [(bar.time.to_i+8*3600)*1000, fenxingk.start, fenxingk.high, fenxingk.low, fenxingk.close,fenxing]
+      #data = [(bar.time.to_i+8*3600)*1000, fenxingk.start, fenxingk.high, fenxingk.low, fenxingk.close]
       @data_array << data
     end
     #render :bar, :layout => false

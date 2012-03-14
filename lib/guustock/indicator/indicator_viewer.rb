@@ -33,11 +33,11 @@ module Guustock
         end
       end
 
-      @bar_sequence.each do |bars|
-        bars.each do |bar|
-          puts "E : #{bar}"
-        end
-      end
+      #@bar_sequence.each do |bars|
+        #bars.each do |bar|
+          #puts "E : #{bar}"
+        #end
+      #end
 
     end
   end

@@ -28,16 +28,25 @@ module Guustock
 
   class CzscBarValue
 
-    attr_accessor :high, :low, :direction
-    def initialize(bar, direction = DIRECTION_NO)
-      @high = bar.high
-      @low = bar.low
+    attr_accessor :start, :high, :low, :close, :direction
+    def initialize(bar = nil, direction = DIRECTION_NO)
+      unless bar.nil?
+        @start = bar.start
+        @high = bar.high
+        @low = bar.low
+        @close = bar.close
+      else
+        @start = 0.0
+        @high = 0.0
+        @low = 0.0
+        @close = 0.0
+      end
       @direction = direction
     end
 
     def to_s
 
-      "high:#{@high},low:#{@low},direction:#{@direction}"
+      "start:#{@start},high:#{@high},low:#{@low},close:#{@close},direction:#{@direction}"
     end
 
   end
@@ -82,6 +91,7 @@ module Guustock
           cbar.low = [cbar.low, bar.low].min
           cbar.high = [cbar.high, bar.high].min
         end
+        cbar.close = bar.close
         return true
       end
 

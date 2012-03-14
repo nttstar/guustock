@@ -21,23 +21,7 @@
 //
 //});
 
-$.getJSON(<%= "'#{@ohlc_data_source}'" -%>, function(data) {
-
-    var ohlc = [], fenxing = [], flag = [], dataLength = data.length
-    for(i = 0; i< dataLength; i++)
-    {
-        ohlc.push([data[i][0], data[i][1], data[i][2], data[i][3], data[i][4]]);
-        if(data[i][5]=="DING")
-        {
-            fenxing.push([data[i][0], data[i][2]]);
-            flag.push({x: data[i][0], title:'DING'});
-        }
-        else if(data[i][5]=="DI")
-        {
-            fenxing.push([data[i][0], data[i][3]]);
-            flag.push({x: data[i][0], title:'DING'});
-        }
-    }
+$.getJSON(<%= "'#{@ohlc_data_source}'" -%>, function(jsonData) {
     
     chart1 = new Highcharts.StockChart({
     chart: {
@@ -70,22 +54,9 @@ $.getJSON(<%= "'#{@ohlc_data_source}'" -%>, function(data) {
 
     series: [{
     type: 'candlestick',
-    name: 'fenxingk',
-    data: ohlc
-    }
-    , {
-    name: 'fenxing',
-    id: 'fx',
-    data: fenxing
-    }
-    , {
-    type: 'flags',
-    name: 'FenxingFlag',
-    data: flag,
-    onSeries: 'fx',
-    shape: 'squarepin'
-    }
-    ]
+    name: 'Bar',
+    data: jsonData
+    }]
 
     });
 

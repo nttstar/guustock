@@ -1,8 +1,8 @@
 Guustock::Application.routes.draw do
   get "data_feed/bar"
+  get "data_feed/fenxing"
 
-  get "charts/show"
-  get "charts/aaa"
+  get "charts/bar"
   get "charts/fenxing"
 
   get "show/index"
