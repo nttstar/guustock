@@ -21,21 +21,27 @@
 //
 //});
 
-$.getJSON(<%= "'#{@ohlc_data_source}'" -%>, function(data) {
+$.getJSON(<%= raw("'#{@fenxing_data_source}'") -%>, function(data) {
 
-    var ohlc = [], fenxing = [], flag = [], dataLength = data.length
+    var bar = [], vol = [], fenxingk = [], fenxing = [], flag = [], dataLength = data.length
     for(i = 0; i< dataLength; i++)
     {
-        ohlc.push([data[i][0], data[i][1], data[i][2], data[i][3], data[i][4]]);
-        if(data[i][5]=="DING")
+        time = data[i][0]
+        bar.push([time, data[i][1], data[i][2], data[i][3], data[i][4]]);
+        vol.push(data[i][5])
+        if(data[i].length>6)
         {
-            fenxing.push([data[i][0], data[i][2]]);
-            flag.push({x: data[i][0], title:'DING'});
-        }
-        else if(data[i][5]=="DI")
-        {
-            fenxing.push([data[i][0], data[i][3]]);
-            flag.push({x: data[i][0], title:'DING'});
+            fenxingk.push([time, data[i][6], data[i][7], data[i][8], data[i][9]]);
+            if(data[i][10]=="DING")
+            {
+                fenxing.push([time, data[i][7]]);
+                flag.push({x: time, title:'顶'});
+            }
+            else if(data[i][10]=="DI")
+            {
+                fenxing.push([time, data[i][8]]);
+                flag.push({x: time, title:'底'});
+            }
         }
     }
     
@@ -53,7 +59,7 @@ $.getJSON(<%= "'#{@ohlc_data_source}'" -%>, function(data) {
     selected: 0
     },
     title: {
-    text: 'Chinese Stock Market Bar Chart'
+    text: '缠中说禅 分型指示器'
     },
     //xAxis: {
     //dateTimeLabelFormats:
@@ -67,26 +73,75 @@ $.getJSON(<%= "'#{@ohlc_data_source}'" -%>, function(data) {
     //year: '%Y'
     //},
     //},
+                                        
+    yAxis: [{
+        title: {
+            text: 'K线'
+        },
+        height: 200,
+        lineWidth: 2
+    },{
+        title: {
+            text: '标准K线'
+        },
+        top: 300,
+        height: 200,
+        offset: 0,
+        lineWidth: 2
+    }, {
+        title: {
+            text: '成交量'
+        },
+        top: 550,
+        height: 100,
+        offset: 0,
+        lineWidth: 2
+    }],
 
-    series: [{
+    plotOptions: {
+        candlestick: {
+        color: 'green',
+        upColor: 'red'
+        }
+    },
+
+    series: [
+    {
     type: 'candlestick',
-    name: 'fenxingk',
-    data: ohlc
+    name: 'K线',
+    yAxis: 0,
+    data: bar
     }
     , {
-    name: 'fenxing',
+    type: 'candlestick',
+    name: '标准K线',
+    data: fenxingk,
+    yAxis: 1
+    }
+    , {
+    type: 'area',
+    name: '成交量',
+    yAxis: 2,
+    data: vol
+    }
+    , {
+    name: '分型标注',
     id: 'fx',
+    yAxis: 1,
     data: fenxing
     }
     , {
     type: 'flags',
     name: 'FenxingFlag',
     data: flag,
+    yAxis: 1,
     onSeries: 'fx',
     shape: 'squarepin'
     }
+    
     ]
 
     });
+
 
 });

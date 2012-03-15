@@ -2,7 +2,7 @@ require 'date'
 module Guustock
 
   class Bar
-    attr_accessor :id, :time, :start, :high, :low, :close, :vol
+    attr_accessor :id, :time, :vol
     attr_accessor :period, :indicator
     def initialize(id = nil, time = nil, start = 0.0, high = 0.0, low = 0.0, close = 0.0, vol = 0.0)
       @id = id
@@ -16,6 +16,23 @@ module Guustock
       @indicator = {}
     end
 
+    def start
+
+      @start.round(2)
+    end
+
+    def high
+
+      @high.round(2)
+    end
+    def low
+
+      @low.round(2)
+    end
+    def close
+
+      @close.round(2)
+    end
     def set_key(key)
       @id, stime = key.split('>')
       @time = Bar.parse_time_str(stime)

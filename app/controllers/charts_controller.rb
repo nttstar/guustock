@@ -28,7 +28,7 @@ class ChartsController < ApplicationController
       end
       format.js do
         @ohlc_data_source = url_for(:action => "bar", :controller => "data_feed")
-        @ohlc_data_source = "#{@ohlc_data_source}?id=#{@id}&year=#{@year}"
+        @ohlc_data_source = "#{@ohlc_data_source}?#{request.query_string}"
         #puts "url : #{@ohlc_data_source}"
         render :action => "bar"
       end
@@ -39,6 +39,10 @@ class ChartsController < ApplicationController
     @indicator_name = "fenxing"
     @id = params['id']
     @year = params['year'].to_i
+    @month = nil
+    @day = nil
+    @month = params['month'].to_i unless params['month'].nil?
+    @day = params['day'].to_i unless params['day'].nil?
     #@h = LazyHighCharts::HighChart.new('graph') do |f|
       #f.option[:title][:text] = "Test stock"
       #f.option[:chart][:renderTo] = "container"
@@ -50,8 +54,10 @@ class ChartsController < ApplicationController
         render :action => "common"
       end
       format.js do
-        @ohlc_data_source = url_for(:action => "fenxing", :controller => "data_feed")
-        @ohlc_data_source = "#{@ohlc_data_source}?id=#{@id}&year=#{@year}"
+        @bar_data_source = url_for(:action => "bar", :controller => "data_feed")
+        @bar_data_source = "#{@bar_data_source}?#{request.query_string}"
+        @fenxing_data_source = url_for(:action => "fenxing", :controller => "data_feed")
+        @fenxing_data_source = "#{@fenxing_data_source}?#{request.query_string}"
         render :action => "fenxing"
       end
     end

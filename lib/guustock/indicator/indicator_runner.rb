@@ -29,11 +29,17 @@ module Guustock
       end
       #puts "forward size : #{forward_bar.size()}"
       forward_bar << bar
-      IndicatorCalculator.calculate(@indicator_name, forward_bar)
+      #IndicatorCalculator.calculate(@indicator_name, forward_bar)
       #if forward_bar.size == @max_in_buffer
         #forward_bar = forward_bar.last(@lookback)
         #@forward_bars[key] = forward_bar
       #end
+    end
+
+    def calculate()
+      @forward_bars.each do |key, forward_bar|
+        IndicatorCalculator.calculate(@indicator_name, forward_bar)
+      end
     end
 
     def get_bar_array(id, period)

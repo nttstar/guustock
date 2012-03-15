@@ -32,6 +32,7 @@ module Guustock
           #end
         end
       end
+      runner.calculate
 
       #@bar_sequence.each do |bars|
         #bars.each do |bar|

@@ -81,7 +81,7 @@ module Guustock
         return false
       else
         relat = relation(cbar, bar)
-        if relat != BAR_CONTAINS and relat != BAR_BE_CONTAINED
+        if relat != BAR_CONTAINS and relat != BAR_BE_CONTAINED and relat != BAR_EQUAL
           return false
         end
         if cbar.direction==DIRECTION_UP
