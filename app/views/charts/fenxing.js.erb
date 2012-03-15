@@ -61,18 +61,18 @@ $.getJSON(<%= raw("'#{@fenxing_data_source}'") -%>, function(data) {
     title: {
     text: '缠中说禅 分型指示器'
     },
-    //xAxis: {
-    //dateTimeLabelFormats:
-    //{
-    //second: '%Y-%m-%d<br/>%H:%M:%S',
-    //minute: '%Y-%m-%d<br/>%H:%M',
-    //hour: '%Y-%m-%d<br/>%H:%M',
-    //day: '%Y<br/>%m-%d',
-    //week: '%Y<br/>%m-%d',
-    //month: '%Y-%m',
-    //year: '%Y'
-    //},
-    //},
+    xAxis: {
+    dateTimeLabelFormats:
+    {
+    second: '%m-%d<br/>%H:%M:%S',
+    minute: '%m-%d<br/>%H:%M',
+    hour: '%m-%d<br/>%H:%M',
+    day: '%Y-%m-%d',
+    week: '%Y<br/>%m-%d',
+    month: '%Y-%m',
+    year: '%Y年'
+    }
+    },
                                         
     yAxis: [{
         title: {
@@ -119,7 +119,7 @@ $.getJSON(<%= raw("'#{@fenxing_data_source}'") -%>, function(data) {
     yAxis: 1
     }
     , {
-    type: 'area',
+    type: 'column',
     name: '成交量',
     yAxis: 2,
     data: vol
