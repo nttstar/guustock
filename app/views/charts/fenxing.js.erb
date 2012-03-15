@@ -26,9 +26,9 @@ $.getJSON(<%= raw("'#{@fenxing_data_source}'") -%>, function(data) {
     var bar = [], vol = [], fenxingk = [], fenxing = [], flag = [], dataLength = data.length
     for(i = 0; i< dataLength; i++)
     {
-        time = data[i][0]
+        time = data[i][0]-5*60*1000;
         bar.push([time, data[i][1], data[i][2], data[i][3], data[i][4]]);
-        vol.push(data[i][5])
+        vol.push([time, data[i][5]]);
         if(data[i].length>6)
         {
             fenxingk.push([time, data[i][6], data[i][7], data[i][8], data[i][9]]);
@@ -51,19 +51,19 @@ $.getJSON(<%= raw("'#{@fenxing_data_source}'") -%>, function(data) {
     },
     rangeSelector: {
     buttons: [
-    {type:'day', count: 1, text: '1d'},
-    {type:'month', count: 1, text: '1m'},
-    {type:'month', count: 6, text: '6m'},
-    {type:'year', count: 1, text: '1y'}
+    {type:'day', count: 1, text: '1d'}
+    //,{type:'month', count: 1, text: '1m'}
+    //,{type:'month', count: 6, text: '6m'}
+    //,{type:'year', count: 1, text: '1y'}
     ],
     selected: 0
     },
     title: {
     text: '缠中说禅 分型指示器'
     },
+
     xAxis: {
-    dateTimeLabelFormats:
-    {
+    dateTimeLabelFormats: {
     second: '%m-%d<br/>%H:%M:%S',
     minute: '%m-%d<br/>%H:%M',
     hour: '%m-%d<br/>%H:%M',
@@ -71,7 +71,9 @@ $.getJSON(<%= raw("'#{@fenxing_data_source}'") -%>, function(data) {
     week: '%Y<br/>%m-%d',
     month: '%Y-%m',
     year: '%Y年'
-    }
+    },
+    //minRange: 30 * 24 * 3600 * 1000
+    //maxRange: 24*3600*1000
     },
                                         
     yAxis: [{
@@ -82,7 +84,7 @@ $.getJSON(<%= raw("'#{@fenxing_data_source}'") -%>, function(data) {
         lineWidth: 2
     },{
         title: {
-            text: '标准K线'
+            text: '缠中说禅标准K线'
         },
         top: 300,
         height: 200,
@@ -132,7 +134,7 @@ $.getJSON(<%= raw("'#{@fenxing_data_source}'") -%>, function(data) {
     }
     , {
     type: 'flags',
-    name: 'FenxingFlag',
+    name: '分型标签',
     data: flag,
     yAxis: 1,
     onSeries: 'fx',
