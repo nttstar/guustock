@@ -49,19 +49,47 @@ module Guustock
         relation01 = CzscHelper.relation(value_array[0].cbar, value_array[1].cbar) 
         relation12 = CzscHelper.relation(value_array[1].cbar, value_array[2].cbar) 
         if relation01==BAR_HIGHER and relation12==BAR_LOWER
-          bar_array[value_array[0].index].indicator[name()] = FX_DI_LEFT
-          bar_array[value_array[1].index].indicator[name()] = FX_DI
-          bar_array[value_array[2].index].indicator[name()] = FX_DI_RIGHT
+          fx_index = value_array[1].index
+          #bar_array[value_array[0].index].indicator[name()] = FX_DI_LEFT
+          bar_array[fx_index].indicator[name()] = FX_DI
+          #bar_array[value_array[2].index].indicator[name()] = FX_DI_RIGHT
           isize = value_array[2].index+1
           value_array.clear
+
+          i = fx_index-1
+          while i>=0
+            fx = bar_array[i].indicator[name()]
+            if !fx.nil? and (fx==FX_DI or fx==FX_DING)
+              if fx==FX_DI #duplicate
+                bar_array[i].indicator[name()] = nil
+              end
+              break
+            end
+            i-=1
+          end
+
         elsif relation01==BAR_LOWER and relation12==BAR_HIGHER
-          bar_array[value_array[0].index].indicator[name()] = FX_DING_LEFT
-          bar_array[value_array[1].index].indicator[name()] = FX_DING
-          bar_array[value_array[2].index].indicator[name()] = FX_DING_RIGHT
+          fx_index = value_array[1].index
+          #bar_array[value_array[0].index].indicator[name()] = FX_DING_LEFT
+          bar_array[fx_index].indicator[name()] = FX_DING
+          #bar_array[value_array[2].index].indicator[name()] = FX_DING_RIGHT
           isize = value_array[2].index+1
           value_array.clear
+
+          i = fx_index-1
+          while i>=0
+            fx = bar_array[i].indicator[name()]
+            if !fx.nil? and (fx==FX_DI or fx==FX_DING)
+              if fx==FX_DING #duplicate
+                bar_array[i].indicator[name()] = nil
+              end
+              break
+            end
+            i-=1
+          end
+
         else
-          bar_array[value_array[0].index].indicator[name()] = FX_OTHER
+          #bar_array[value_array[0].index].indicator[name()] = FX_OTHER
           isize = value_array[0].index+1
           value_array.delete_at(0)
         end
