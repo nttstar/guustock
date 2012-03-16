@@ -52,8 +52,8 @@ $.getJSON(<%= raw("'#{@fenxing_data_source}'") -%>, function(data) {
     rangeSelector: {
     buttons: [
     {type:'day', count: 1, text: '1d'}
-    //,{type:'month', count: 1, text: '1m'}
-    //,{type:'month', count: 6, text: '6m'}
+    ,{type:'day', count: 10, text: '10d'}
+    ,{type:'month', count: 1, text: '1m'}
     //,{type:'year', count: 1, text: '1y'}
     ],
     selected: 0

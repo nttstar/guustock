@@ -1,3 +1,13 @@
+<p>参数由网址传递:</p>
+<p>参数名 [id]: 股票ID(必须)</p>
+<p>参数名 [year]: 查询年份(必须)</p>
+<p>参数名 [month]: 查询月份(可选)</p>
+<p>参数名 [day]: 查询日期(可选)</p>
+<p>Examples:</p>
+<p><a href="http://guuker.com:3000/charts/fenxing?id=SH000001&year=2007">2007年上证指数</a></p>
+<p><a href="http://guuker.com:3000/charts/fenxing?id=SH000001&year=2007&month=5">2007年5月上证指数</a></p>
+<p><a href="http://guuker.com:3000/charts/fenxing?id=SH000001&year=2007&month=5&day=10">2007年5月10日上证指数</a></p>
+<p>股票收录数据范围: 2004年1月 至 2010年11月(若图表为空则当前无对应数据)</p>
 <div id="container" style="height: 800px; width: 1200px;"></div>
 <script type='text/javascript'>
     $(document).ready(function(){
