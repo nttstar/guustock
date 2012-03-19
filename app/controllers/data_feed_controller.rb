@@ -33,7 +33,7 @@ class DataFeedController < ApplicationController
       break if bar.time>=end_time
       @bar_array << bar
       #data = [bar.time.to_i*1000, bar.start, bar.high, bar.low, bar.close, bar.vol, bar.period]
-      data = [(bar.time.to_i+8*3600)*1000, bar.start, bar.high, bar.low, bar.close, bar.vol]
+      data = [(bar.time.to_i+8*3600)*1000, bar.open, bar.high, bar.low, bar.close, bar.vol]
       @data_array << data
     end
     #render :bar, :layout => false
@@ -72,17 +72,19 @@ class DataFeedController < ApplicationController
       #puts bars.size
       bar = bars[0]
       #puts "vol:#{bar.vol}"
-      data = [(bar.time.to_i+8*3600)*1000, bar.start, bar.high, bar.low, bar.close, bar.vol]
+      data = [(bar.time.to_i+8*3600)*1000, bar.open, bar.high, bar.low, bar.close, bar.vol]
       fenxingk = bar.indicator['fenxingk']
       fenxing = bar.indicator['fenxing']
+      #puts "fenxing:#{fenxing}"
       unless fenxingk.nil?
-        start = fenxingk.low
-        close = fenxingk.high
-        if fenxingk.direction == DIRECTION_DOWN
-          start = fenxingk.high
-          close = fenxingk.low
+        data.concat([fenxingk.open, fenxingk.high, fenxingk.low, fenxingk.close])
+        unless fenxing.nil?
+          if fenxing==FX_DI
+            data << 1
+          elsif fenxing==FX_DING
+            data << 2
+          end
         end
-        data.concat([start, fenxingk.high, fenxingk.low, close, fenxing])
       end
       @data_array << data
     end

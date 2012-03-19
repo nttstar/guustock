@@ -32,15 +32,18 @@ $.getJSON(<%= raw("'#{@fenxing_data_source}'") -%>, function(data) {
         if(data[i].length>6)
         {
             fenxingk.push([time, data[i][6], data[i][7], data[i][8], data[i][9]]);
-            if(data[i][10]=="DING")
+            if(data[i].length>10)
             {
-                fenxing.push([time, data[i][7]]);
-                flag.push({x: time, title:'顶'});
-            }
-            else if(data[i][10]=="DI")
-            {
-                fenxing.push([time, data[i][8]]);
-                flag.push({x: time, title:'底'});
+                if(data[i][10]==1)
+                {
+                    fenxing.push([time, data[i][8]]);
+                    flag.push({x: time, title:'底'});
+                }
+                else if(data[i][10]==2)
+                {
+                    fenxing.push([time, data[i][7]]);
+                    flag.push({x: time, title:'顶'});
+                }
             }
         }
     }

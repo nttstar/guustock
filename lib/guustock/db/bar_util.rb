@@ -19,7 +19,7 @@ module Guustock
 
       id = sorted[0].id
       endtime = sorted[-1].time
-      start = sorted[0].start
+      open = sorted[0].open
       high = sorted.max { |a, b| a.high<=>b.high }.high
       low = sorted.min { |a, b| a.low<=>b.low }.low
       close = sorted[-1].close
@@ -28,7 +28,7 @@ module Guustock
       iendtime = endtime.to_i
       ifendtime = first_endtime.to_i
       period = (iendtime-ifendtime)/60+sorted[0].period #period is minutes
-      bar = Bar.new(id, endtime, start, high, low, close, vol)
+      bar = Bar.new(id, endtime, open, high, low, close, vol)
       bar.period = period
       return bar
     end

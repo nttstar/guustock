@@ -13,12 +13,18 @@ module Guustock
     end
 
     def min_lookback()
-      1
+      
+      0
+    end
+
+    def max_lookback()
+
+      0
     end
 
     def lookforward()
 
-      10
+      0
     end
 
     ValueType = Struct.new(:cbar, :index)
@@ -37,14 +43,15 @@ module Guustock
         cbar = bar_array[i].indicator[cname]
         unless cbar.nil?
           value_array << ValueType.new(cbar, i)
+          #puts "cbar:#{cbar}"
         end
         next if value_array.size<3
-        relation01 = CzscHelper.relation(value_array[0].cbar, value_array[1].cbar) 
-        relation12 = CzscHelper.relation(value_array[1].cbar, value_array[2].cbar) 
+        direction1 = value_array[1].cbar.direction
+        direction2 = value_array[2].cbar.direction
         fx_candidate = FX_OTHER
-        if relation01==BAR_HIGHER and relation12==BAR_LOWER
+        if direction1==DIRECTION_DOWN and direction2==DIRECTION_UP
           fx_candidate = FX_DI
-        elsif relation01==BAR_LOWER and relation12==BAR_HIGHER
+        elsif direction2==DIRECTION_DOWN and direction1==DIRECTION_UP
           fx_candidate = FX_DING
         end
         fx_index = value_array[1].index
@@ -73,12 +80,25 @@ module Guustock
           bar_array[fx_index].indicator[name()] = fx_candidate
           isize = fx_index+1
           value_array.clear
+          #puts "find FX at #{fx_index}"
         else
           isize = value_array[0].index+1
           value_array.delete_at(0)
         end
       end
       bar_array.isize[name()] = isize
+
+      #do post filter
+      #fenxing_list = []
+      #type = FX_OTHER
+      #range.each do |i|
+        #fenxing = bar_array[i].indicator[name()]
+        #next if fenxing.nil?
+        #if fenxing!=type and !fenxing_list.empty?
+          
+        #end
+      #end
+
     end
 
   end
