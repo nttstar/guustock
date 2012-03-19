@@ -4,10 +4,10 @@ module Guustock
   class Bar
     attr_accessor :id, :time, :vol
     attr_accessor :period, :indicator
-    def initialize(id = nil, time = nil, start = 0.0, high = 0.0, low = 0.0, close = 0.0, vol = 0.0)
+    def initialize(id = nil, time = nil, open = 0.0, high = 0.0, low = 0.0, close = 0.0, vol = 0.0)
       @id = id
       @time = time
-      @start = start
+      @open = open
       @high = high
       @low = low
       @close = close
@@ -16,9 +16,9 @@ module Guustock
       @indicator = {}
     end
 
-    def start
+    def open
 
-      @start.round(2)
+      @open.round(2)
     end
 
     def high
@@ -40,7 +40,7 @@ module Guustock
 
     def set_value(value)
       obj_value = Marshal.load(value)
-      @start = obj_value[0]
+      @open = obj_value[0]
       @high = obj_value[1]
       @low = obj_value[2]
       @close = obj_value[3]
@@ -60,15 +60,15 @@ module Guustock
       @indicator.each do |key, value|
         indicator_str += "[#{key}:#{value}]"
       end
-      "#{@id},#{time_s},#{@start},#{@high},#{@low},#{@close},#{@vol},#{@period} ! #{indicator_str}"
+      "#{@id},#{time_s},#{@open},#{@high},#{@low},#{@close},#{@vol},#{@period} ! #{indicator_str}"
     end
     
     def avg
-      (@start+@close)/2.0
+      (@open+@close)/2.0
     end
 
     def price
-      (@start+@close*2)/3.0
+      (@open+@close*2)/3.0
     end
     
     def self.key_time_str(time)
@@ -90,7 +90,7 @@ module Guustock
     end
     
     def get_value
-      obj_value = [@start, @high, @low, @close, @vol]
+      obj_value = [@open, @high, @low, @close, @vol]
       Marshal.dump(obj_value)
     end
     
