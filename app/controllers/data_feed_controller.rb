@@ -63,8 +63,10 @@ class DataFeedController < ApplicationController
     #elsif !@year.nil?
       #end_time = Time.mktime(@year+1, @month, @day)
     #end
+    
+    indicator_name = "fakefenxing"
       
-    viewer = IndicatorViewer.new("fenxing")
+    viewer = IndicatorViewer.new(indicator_name)
     viewer.view(@id, periods, start_time, end_time)
     @data_array = []
     viewer.bar_sequence.each do |bars|
@@ -74,7 +76,7 @@ class DataFeedController < ApplicationController
       #puts "vol:#{bar.vol}"
       data = [(bar.time.to_i+8*3600)*1000, bar.open, bar.high, bar.low, bar.close, bar.vol]
       fenxingk = bar.indicator['fenxingk']
-      fenxing = bar.indicator['fenxing']
+      fenxing = bar.indicator[indicator_name]
       #puts "fenxing:#{fenxing}"
       unless fenxingk.nil?
         data.concat([fenxingk.open, fenxingk.high, fenxingk.low, fenxingk.close])

@@ -1,6 +1,7 @@
 require_relative 'indicator.rb'
 require_relative 'macd_indicator.rb'
 require_relative 'fenxingk_indicator.rb'
+require_relative 'fakefenxing_indicator.rb'
 require_relative 'fenxing_indicator.rb'
 
 module Guustock
@@ -16,6 +17,8 @@ module Guustock
       i = MacdIndicator.new
       add(i)
       i = FenxingkIndicator.new
+      add(i)
+      i = FakefenxingIndicator.new
       add(i)
       i = FenxingIndicator.new
       add(i)

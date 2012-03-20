@@ -6,12 +6,18 @@ module Guustock
 
     def min_lookback()
 
-      1
+      0
     end
 
     def max_lookback()
 
-      CZSC_LOOKBACK
+      #CZSC_LOOKBACK
+      0
+    end
+
+    def lookforward()
+
+      0
     end
 
     

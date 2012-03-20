@@ -1,3 +1,4 @@
+puts "loading bar_db.rb"
 require 'tokyocabinet'
 require_relative "../common/bar.rb"
 require_relative "../common/config.rb"

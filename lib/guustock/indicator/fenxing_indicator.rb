@@ -6,29 +6,29 @@ require_relative 'czsc_indicator_base'
 module Guustock
   class FenxingIndicator < CzscIndicatorBase
     def initialize()
-      depend_on("fenxingk")
+      depend_on("fakefenxing")
     end
 
     def name()
       "fenxing"
     end
 
-    def min_lookback()
+    #def min_lookback()
       
-      0
-    end
+      #0
+    #end
 
-    def max_lookback()
+    #def max_lookback()
 
-      0
-    end
+      #0
+    #end
 
-    def lookforward()
+    #def lookforward()
 
-      0
-    end
+      #0
+    #end
 
-    ValueType ||= Struct.new(:cbar, :index, :fenxing)
+    ValueType ||= Struct.new(:index, :cindex, :fenxing)
 
 
     def calculate(bar_array)
@@ -36,57 +36,35 @@ module Guustock
       return if range.nil?
 
       cname = "fenxingk"
+      fname = "fakefenxing"
       value_array = []
       size = bar_array.size()
       isize = bar_array.isize[name()]
 
-      cisize = bar_array.isize[cname]
+      cindex = 0
+      pre_fx_value = nil
       range.each do |i|
-        cbar = bar_array[i].indicator[cname]
-        unless cbar.nil?
-          value_array << ValueType.new(cbar, i)
+        fakefx = bar_array[i].indicator[fname]
+        cindex+=1 unless bar_array[i].indicator[cname].nil?
+        unless fakefx.nil?
+          value_array << ValueType.new(i, cindex, fakefx)
           #puts "cbar:#{cbar}"
         end
-        next if value_array.size<3
-        direction1 = value_array[1].cbar.direction
-        direction2 = value_array[2].cbar.direction
-        fx_candidate = FX_OTHER
-        if direction1==DIRECTION_DOWN and direction2==DIRECTION_UP
-          fx_candidate = FX_DI
-        elsif direction2==DIRECTION_DOWN and direction1==DIRECTION_UP
-          fx_candidate = FX_DING
-        end
-        fx_index = value_array[1].index
-        if fx_candidate==FX_DI or fx_candidate==FX_DING
-          #do reverse search
-          fenxing_distance = 0
-          (fx_index-1).downto(0).each do |b|
-            puts "b:#{b}"
-            sk = bar_array[b].indicator[cname]
-            fenxing_distance += 1 unless sk.nil?
-            fx = bar_array[b].indicator[name()]
-            next if fx.nil?
-            next if fx!=FX_DI and fx!=FX_DING
-            if fx==fx_candidate #duplicate
-              bar_array[b].indicator[name()] = nil
-              #puts "dup at #{b}"
-            else 
-              if fenxing_distance <= 3
-                fx_candidate = FX_OTHER
+        next if value_array.empty?
+        to_pick_fx = (i==range.end)
+        unless to_pick_fx
+          pre_cindex = nil
+          value_array.each do |v|
+            unless pre_cindex.nil?
+              if v.cindex-pre_cindex>=3
+                to_pick_fx = true
+                break
               end
             end
-            break
+            pre_cindex = v.cindex
           end
         end
-        if fx_candidate==FX_DI or fx_candidate==FX_DING
-          bar_array[fx_index].indicator[name()] = fx_candidate
-          isize = fx_index+1
-          value_array.clear
-          #puts "find FX at #{fx_index}"
-        else
-          isize = value_array[0].index+1
-          value_array.delete_at(0)
-        end
+        next unless to_pick_fx
       end
       bar_array.isize[name()] = isize
 
