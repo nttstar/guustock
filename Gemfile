@@ -39,5 +39,6 @@ gem 'jquery-rails'
 
 gem 'therubyracer', require: "v8"
 gem 'tokyocabinet'
+gem 'bindata'
 #gem 'lazy_high_charts'
 

@@ -1,3 +1,4 @@
+puts "!!!RELOADING"
 require_relative 'indicator'
 require_relative 'czsc_helper'
 require_relative 'czsc_indicator_base'
@@ -27,7 +28,8 @@ module Guustock
       0
     end
 
-    ValueType = Struct.new(:cbar, :index)
+    ValueType ||= Struct.new(:cbar, :index, :fenxing)
+
 
     def calculate(bar_array)
       range = valid_range(bar_array)
@@ -59,7 +61,7 @@ module Guustock
           #do reverse search
           fenxing_distance = 0
           (fx_index-1).downto(0).each do |b|
-            #puts "b:#{b}"
+            puts "b:#{b}"
             sk = bar_array[b].indicator[cname]
             fenxing_distance += 1 unless sk.nil?
             fx = bar_array[b].indicator[name()]

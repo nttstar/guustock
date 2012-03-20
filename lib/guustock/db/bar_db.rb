@@ -17,7 +17,7 @@ module Guustock
     end
 
 
-    @@instance = BarDb.new(Config::db_path)
+    @@instance ||= BarDb.new(Config::db_path)
 
     def self.instance
       if !@@instance.is_open

@@ -9,7 +9,7 @@ module Guustock
       @db = db
     end
 
-    @@instance = BarDbReader.new(BarDb.instance)
+    @@instance ||= BarDbReader.new(BarDb.instance)
 
     def self.instance
         return @@instance
