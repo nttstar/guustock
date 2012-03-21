@@ -9,7 +9,7 @@ $.getJSON(<%= raw("'#{@fenxing_data_source}'") -%>, function(data) {
     }
     for(i = 0; i< dataLength; i++)
     {
-        time = data[i][0]-10*60*1000;
+        time = data[i][0]-5*60*1000;
         bar.push([time, data[i][1], data[i][2], data[i][3], data[i][4]]);
         vol.push([time, data[i][5]]);
         if(data[i].length>6)
@@ -57,6 +57,9 @@ $.getJSON(<%= raw("'#{@fenxing_data_source}'") -%>, function(data) {
     week: '%Y<br/>%m-%d',
     month: '%Y-%m',
     year: '%Y年'
+    },
+    global: {
+        useUTC: false
     },
     //minRange: 30 * 24 * 3600 * 1000
     //maxRange: 24*3600*1000
