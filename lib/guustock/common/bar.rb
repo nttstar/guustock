@@ -77,7 +77,7 @@ module Guustock
 
     def self.parse_time_str(stime)
       dt = DateTime.strptime(stime, "%Y%m%d%H%M")
-      return Time.mktime(dt.year, dt.month, dt.day, dt.hour, dt.min, 0, 0)
+      return Time.utc(dt.year, dt.month, dt.day, dt.hour, dt.min, 0, 0)
     end
     
     def self.get_key_impl(id, time)

@@ -74,7 +74,7 @@ class DataFeedController < ApplicationController
       #puts bars.size
       bar = bars[0]
       #puts "vol:#{bar.vol}"
-      data = [(bar.time.to_i+8*3600)*1000, bar.open, bar.high, bar.low, bar.close, bar.vol]
+      data = [(bar.time.to_i)*1000, bar.open, bar.high, bar.low, bar.close, bar.vol]
       fenxingk = bar.indicator['fenxingk']
       fenxing = bar.indicator[indicator_name]
       #puts "fenxing:#{fenxing}"
