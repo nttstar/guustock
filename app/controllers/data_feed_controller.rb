@@ -64,7 +64,7 @@ class DataFeedController < ApplicationController
       #end_time = Time.mktime(@year+1, @month, @day)
     #end
     
-    indicator_name = "fakefenxing"
+    indicator_name = "fenxing"
       
     viewer = IndicatorViewer.new(indicator_name)
     viewer.view(@id, periods, start_time, end_time)

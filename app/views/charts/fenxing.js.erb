@@ -1,29 +1,12 @@
-//chart1 = new Highcharts.StockChart({
-//chart: {
-//renderTo: 'container'
-//},
-//rangeSelector: {
-//selected: 1
-//},
-//title: {
-//text: 'Test chart'
-//},
-//
-//series: [{
-//type: 'candlestick',
-//name: 'A',
-//data: [
-//[1110240000000,41.90,42.16,40.10,40.53],
-//[1110326400000,39.44,40.28,38.83,39.35]
-//]
-//}]
-//
-//
-//});
+$('#container').html("<img src='/images/ajax-loader.gif'>");
 
 $.getJSON(<%= raw("'#{@fenxing_data_source}'") -%>, function(data) {
-
+    $('#container').html("");
     var bar = [], vol = [], fenxingk = [], fenxing = [], flag = [], dataLength = data.length
+    if (dataLength==0) 
+    {
+        return;
+    }
     for(i = 0; i< dataLength; i++)
     {
         time = data[i][0]-5*60*1000;

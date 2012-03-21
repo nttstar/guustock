@@ -7,8 +7,8 @@ $stdout.sync = true
 include Guustock
 id = ARGV[0]
 exit(-1) if id.nil?
-viewer = IndicatorViewer.new("fakefenxing")
-viewer.view(id, [5], Time.mktime(2005, 6, 1), Time.mktime(2005,7,1))
+viewer = IndicatorViewer.new("fenxing")
+viewer.view(id, [5], Time.mktime(2007, 7, 2), Time.mktime(2007,7,30))
 viewer.bar_sequence.each do |bars|
   bar = bars[0]
   puts bar
